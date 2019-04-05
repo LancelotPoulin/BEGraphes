@@ -228,12 +228,22 @@ public class Path {
      * </ul>
      * 
      * @return true if the path is valid, false otherwise.
-     * 
-     * @deprecated Need to be implemented.
+
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean validation = false;
+    	if ((origin==null)|| arcs.size()==0 || (!origin.hasSuccessors() && arcs.size()==0)) { // le path est vide ou ne possède qu'un point isole
+    		validation = true;
+    	} else if (arcs.get(0).getOrigin() == origin){ // l'origine du path est bien celui du premier arc
+    		validation = true; 
+    		for(int i=0; i<arcs.size()-1; i++) {
+    			if(arcs.get(i).getDestination() != arcs.get(i+1).getOrigin()) { // chaque arc consecutifs sont testes
+    				validation = false;
+    				i = arcs.size();
+    			} 
+    		}
+    	}
+        return validation;
     }
 
     /**
