@@ -22,7 +22,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Graph graph = data.getGraph();
         
         final int nbNodes = graph.size();
-        
+        int compteurIteration = 0; 
+        int compteurArcSolution = 0;
         // Initialize array of predecessors.
         Arc[] predecessorArcs = new Arc[nbNodes];
         
@@ -40,7 +41,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         boolean nonMarque = true;
         while (nonMarque) {
-
+        	compteurIteration++;
     		Node node = graph.get(tas.findMin().getSommetCourant());
     		if (node == data.getDestination()) {
     			nonMarque = false;
@@ -78,9 +79,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		}
         	}
     		tas.deleteMin();
+    		
     	}
-        
-        
+        System.out.println("nb iteration: "+compteurIteration);
+
         // Destination has no predecessor, the solution is infeasible...
         if (predecessorArcs[data.getDestination().getId()] == null) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
@@ -96,6 +98,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             while (arc != null) {
                 arcs.add(arc);
                 arc = predecessorArcs[arc.getOrigin().getId()];
+                compteurArcSolution ++;
             }
 
             // Reverse the path...
@@ -104,7 +107,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             // Create the final solution.
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
         }
-        
+        System.out.println("nb arc solution: "+compteurArcSolution);
         return solution;
     }
 
