@@ -26,7 +26,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	ShortestPathSolution solution;
         ShortestPathData data = getInputData();
         
-      
         if (data.getGraph() == null || data.getDestination() == null || data.getOrigin() == null) // missing arguments
         {
         	solution = new ShortestPathSolution(data, Status.UNKNOWN);
@@ -67,7 +66,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             	else
             	{
             		Node node = graph.get(tas.findMin().getSommetCourant());
-            		if (node == data.getDestination()) // Si on est destination
+            		if (node == data.getDestination()) // Si on est à destination
             		{
             			nonMarque = false;
             		}

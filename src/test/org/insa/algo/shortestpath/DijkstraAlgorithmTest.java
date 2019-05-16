@@ -24,24 +24,10 @@ public class DijkstraAlgorithmTest
     // Paths Data
     private static ShortestPathData infeasiblePath, singleNodePath, shortPathBicycle, shortPathCarDist, longPathBicycle, longPathCarDist, invalidPath, shortPathCarTime, longPathCarTime;
 
-<<<<<<< HEAD
-    // List of nodes
-    private static Node[] nodes;
-
-    // List of arcs in the graph, a2b is the arc from node A (0) to B (1).
-    @SuppressWarnings("unused")
-    private static Arc a2b, a2c, a2e, b2c, c2d_1, c2d_2, c2d_3, c2a, d2a, d2e, e2d;
-
-    // Some paths...
-    private static Path emptyPath, singleNodePath, shortPath, longPath, loopPath, longLoopPath,
-            invalidPath;
-
-=======
     // Algo and solution
     private static DijkstraAlgorithm DA;
     ShortestPathSolution SPS;
     
->>>>>>> b1fe8939d89cdaa476560a911d80cf5ffdc92ebc
     @BeforeClass
     public static void initAll() throws IOException 
     {
