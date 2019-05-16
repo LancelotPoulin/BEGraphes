@@ -1,13 +1,13 @@
 package org.insa.algo.shortestpath;
 
 import org.insa.graph.Arc;
-import org.insa.graph.Node;
+
 
 public class Label implements Comparable<Label> {
 	private int sommetCourant;
 	private boolean marque;
 	private boolean visite;
-	private double cost;
+	protected double cost;
 	private Arc pere;
 
 	
@@ -45,6 +45,10 @@ public class Label implements Comparable<Label> {
 		return this.cost;
 	}
 	
+	protected double getTotalCost() {
+		return this.cost;
+	}
+	
 	protected Arc getPere() {
 		return this.pere;
 	}
@@ -62,16 +66,6 @@ public class Label implements Comparable<Label> {
 	}
 	
 	public int compareTo(Label autrelabel) {
-		
-		/*int cmp = 0;
-		
-		if (this.cost<autrelabel.getCost()) {
-			cmp = -1;
-		} else if (this.cost>autrelabel.getCost()){
-			cmp = 1;
-		} else if (this.cost==autrelabel.getCost()) {
-			cmp = 0;
-		}*/
-		return ((Double)(this.cost)).compareTo((Double)(autrelabel.getCost()));
+		return ((Double)(this.getTotalCost())).compareTo((Double)(autrelabel.getTotalCost()));
 	}
 }

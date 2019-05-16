@@ -15,7 +15,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
+    
+    protected Label LabelIdoine(int s, boolean m, double c, Arc p, ShortestPathData data) {
+    	return new Label(s, m, c, p);
+    }
+    
     @Override
     protected ShortestPathSolution doRun() {
         ShortestPathData data = getInputData();
@@ -33,7 +37,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         ArrayList<Label> TabLab = new ArrayList<Label>(); 
         
         for (int i = 0; i<nbNodes; i++) {
-        	TabLab.add(new Label(i, false, Double.POSITIVE_INFINITY, null));  
+        	TabLab.add(LabelIdoine(i, false, Double.POSITIVE_INFINITY, null,data));  
         }
         TabLab.get(data.getOrigin().getId()).setCost(0);
         tas.insert(TabLab.get(data.getOrigin().getId()));
@@ -56,12 +60,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     }
                     
                     if (TabLab.get(arc.getDestination().getId()).getMarque()==false) {
-                    	double oldDist = TabLab.get(arc.getDestination().getId()).getCost();
-                    	double newDist = TabLab.get(node.getId()).getCost() + data.getCost(arc);
+                    	double oldDist = TabLab.get(arc.getDestination().getId()).getTotalCost();
+                    	double newDist = TabLab.get(node.getId()).getTotalCost() + data.getCost(arc);
                         if (Double.isInfinite(oldDist) && Double.isFinite(newDist)) {
                             notifyNodeReached(arc.getDestination());
                         }
-                    	if (oldDist > newDist) {
+                    	/*if (oldDist > newDist) {*/
+                        if (TabLab.get(arc.getDestination().getId()).compareTo(TabLab.get(node.getId()))>0) {
                     		TabLab.get(arc.getDestination().getId()).setCost(newDist); 
                 			
                     		predecessorArcs[arc.getDestination().getId()] = arc;
