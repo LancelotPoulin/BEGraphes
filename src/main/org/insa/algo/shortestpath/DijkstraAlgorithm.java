@@ -50,7 +50,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             
             for (int i = 0; i<nbNodes; i++)
             {
-            	TabLab.add(LabelIdoine(i, false, Double.POSITIVE_INFINITY, null, data));  
+            	TabLab.add(LabelIdoine(i, false, Double.POSITIVE_INFINITY, null,data));  
             }
             
             TabLab.get(data.getOrigin().getId()).setCost(0);
