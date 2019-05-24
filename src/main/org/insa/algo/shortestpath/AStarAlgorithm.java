@@ -6,7 +6,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public AStarAlgorithm(ShortestPathData data) {
         super(data);
-        this.perfo = new stat();
     }
     
     /*redefinition of the method newLabel*/

@@ -7,6 +7,7 @@ public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPa
 
     protected ShortestPathAlgorithm(ShortestPathData data) {
         super(data);
+        this.perfo = new Stat();
     }
 
     @Override
@@ -66,4 +67,12 @@ public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPa
             obs.notifyDestinationReached(node);
         }
     }
+
+    
+    protected Stat perfo;
+    
+	public Stat getStat()
+	{
+		return this.perfo;
+	}
 }

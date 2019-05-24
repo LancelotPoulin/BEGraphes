@@ -1,20 +1,27 @@
 package org.insa.algo.shortestpath;
 
-public class stat {
-	protected String valSolution;
+public class Stat {
+	protected float lengthSolution;
+	protected double timeSolution;
 	protected long tps_calc;
 	protected int nbSommetVisites;
 	protected int nbSommetMarques;
 	protected int TailleTasMax;
 	
-	public stat() {
+	public Stat() {
 		this.nbSommetVisites = 0;
         this.nbSommetMarques = 0;
         this.TailleTasMax = 0; 
+        this.tps_calc = 0;
+        this.lengthSolution = 0;
+        this.timeSolution = 0;
 	}
 	
-	public void setValSolution(ShortestPathSolution sol) {
-		this.valSolution=sol.toString();
+	public void setLengthSolution(float sol) {
+		this.lengthSolution= sol;
+	}
+	public void setTimeSolution(double sol) {
+		this.timeSolution= sol;
 	}
 	public void startChrono(long tps) {
 		this.tps_calc = tps;
@@ -34,16 +41,19 @@ public class stat {
 	}
 	
 	/*getter*/
-	public String getValSolution() {
-		return this.valSolution;
+	public float getLengthSolution() {
+		return this.lengthSolution;
+	}
+	public double getTimeSolution() {
+		return this.timeSolution;
 	}
 	public long getCPUTime() {
 		return this.tps_calc;
 	}
-	public long getNbSommetVisites() {
+	public int getNbSommetVisites() {
 		return this.nbSommetVisites;
 	}
-	public long getNbSommetMarques() {
+	public int getNbSommetMarques() {
 		return this.nbSommetMarques;
 	}
 	public int getTailleTasMax() {

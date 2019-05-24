@@ -11,15 +11,9 @@ import org.insa.graph.Node;
 import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
-	protected stat perfo;
-	
-	public stat getStat() {
-		return perfo;
-	}
 	
     public DijkstraAlgorithm(ShortestPathData data) {
-        super(data);    
-        this.perfo = new stat();
+        super(data);
     }
     
     protected Label LabelIdoine(int s, boolean m, double c, Arc p, ShortestPathData data) {
@@ -144,13 +138,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
                 // Create the final solution.
                 solution = new ShortestPathSolution(data, Status.FEASIBLE, new Path(graph, arcs));
-                /*this.perfo.setValSolution(solution);*/
+                this.perfo.setLengthSolution(solution.getPath().getLength());
+                this.perfo.setTimeSolution(solution.getPath().getMinimumTravelTime());
             }
-        	/*System.out.println("val_solution    "+this.perfo.getValSolution());*/
+        	/*System.out.println("val_solution    "+this.perfo.getValSolution());
         	System.out.println("temps CPU       "+this.perfo.getCPUTime());
         	System.out.println("nbSommetVisites "+this.perfo.getNbSommetVisites());
         	System.out.println("nbSommetMarques "+this.perfo.getNbSommetMarques());
-        	System.out.println("taille maxi tas "+this.perfo.getTailleTasMax());        	
+        	System.out.println("taille maxi tas "+this.perfo.getTailleTasMax());*/
         }
         
         return solution;
