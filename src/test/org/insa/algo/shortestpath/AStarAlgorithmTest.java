@@ -22,7 +22,7 @@ public class AStarAlgorithmTest
     private static Graph graph;
     
     // Paths Data
-    private static ShortestPathData infeasiblePath, singleNodePath, shortPathBicycle, shortPathCarDist, longPathBicycle, longPathCarDist, invalidPath, shortPathCarTime, longPathCarTime;
+    private static ShortestPathData shortPathNoRoad, longPathNoRoad, infeasiblePath, singleNodePath, shortPathBicycle, shortPathCarDist, longPathBicycle, longPathCarDist, invalidPath, shortPathCarTime, longPathCarTime;
 
     // Algo and solution
     private static AStarAlgorithm ASA;
@@ -32,7 +32,7 @@ public class AStarAlgorithmTest
     public static void initAll() throws IOException 
     {
     	// Graph file
-    	String mapName = "C:/Users/pouli/Downloads/bretagne.mapgr";
+    	String mapName = "C:/Users/pouli/Downloads/bretagne.mapgr"; // map routière
 
         // Create a graph reader.
         GraphReader reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
@@ -50,6 +50,12 @@ public class AStarAlgorithmTest
         longPathBicycle = new ShortestPathData(graph, graph.get(267704), graph.get(412660), ArcInspectorFactory.getAllFilters().get(3)); // long A to B with bicycle
         longPathCarDist = new ShortestPathData(graph, graph.get(267704), graph.get(412660), ArcInspectorFactory.getAllFilters().get(1)); // long A to B with car Distance
         longPathCarTime = new ShortestPathData(graph, graph.get(267704), graph.get(412660), ArcInspectorFactory.getAllFilters().get(2)); // long A to B with car Time
+        
+        mapName = "C:/Users/pouli/Downloads/carre-dense.mapgr"; // Carré dense, non routier
+        reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+        graph = reader.read();
+        shortPathNoRoad = new ShortestPathData(graph, graph.get(131767), graph.get(183686), ArcInspectorFactory.getAllFilters().get(2)); // short A to B non routier
+        longPathNoRoad = new ShortestPathData(graph, graph.get(14718), graph.get(42778), ArcInspectorFactory.getAllFilters().get(3)); // long A to B routier
     }
     
     @Test
@@ -96,6 +102,18 @@ public class AStarAlgorithmTest
         assertTrue(SPS.getPath().isValid());
         
         ASA = new AStarAlgorithm(longPathCarTime);
+        SPS = ASA.doRun();
+        assertTrue(SPS.isFeasible());
+        assertTrue(SPS.getPath().isValid());
+        
+        // Carré dense
+        
+        ASA = new AStarAlgorithm(shortPathNoRoad);
+        SPS = ASA.doRun();
+        assertTrue(SPS.isFeasible());
+        assertTrue(SPS.getPath().isValid());
+        
+        ASA = new AStarAlgorithm(longPathNoRoad);
         SPS = ASA.doRun();
         assertTrue(SPS.isFeasible());
         assertTrue(SPS.getPath().isValid());
