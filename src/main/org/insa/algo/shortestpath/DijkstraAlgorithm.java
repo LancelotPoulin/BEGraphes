@@ -13,6 +13,10 @@ import org.insa.graph.Path;
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	protected stat perfo;
 	
+	public stat getStat() {
+		return perfo;
+	}
+	
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);    
         this.perfo = new stat();
