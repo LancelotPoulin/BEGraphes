@@ -11,9 +11,15 @@ import org.insa.graph.Node;
 import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
-
+	protected stat perfo;
+	
+	public stat getStat() {
+		return perfo;
+	}
+	
     public DijkstraAlgorithm(ShortestPathData data) {
-        super(data);
+        super(data);    
+        this.perfo = new stat();
     }
     
     protected Label LabelIdoine(int s, boolean m, double c, Arc p, ShortestPathData data) {
@@ -36,11 +42,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
         else
         {
+        	
         	Graph graph = data.getGraph();
             final int nbNodes = graph.size();
             
-            int compteurIteration = 0; 
-            int compteurArcSolution = 0;
             
             // Initialize array of predecessors.
             Arc[] predecessorArcs = new Arc[nbNodes];
@@ -55,24 +60,25 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             TabLab.get(data.getOrigin().getId()).setCost(0);
             tas.insert(TabLab.get(data.getOrigin().getId()));
 
-            boolean nonMarque = true;
-            while (nonMarque)
+            boolean fin = false;
+            this.perfo.startChrono(System.currentTimeMillis());
+            while (!fin)
             {
-            	compteurIteration++;
             	if (tas.isEmpty()) // Empty -> infeasible -> Origin can't reach Destination
             	{
-            		nonMarque = false;
+            		fin = true;
             	}
             	else
             	{
             		Node node = graph.get(tas.findMin().getSommetCourant());
-            		if (node == data.getDestination()) // Si on est à destination
+            		if (TabLab.get(data.getDestination().getId()).getMarque() || node == data.getDestination()) // Si on est a destination
             		{
-            			nonMarque = false;
+            			fin = true;
             		}
             		else
             		{
             			TabLab.get(node.getId()).setMarque(true);
+            			this.perfo.IncrNbSommetMarques();
                     	for (Arc arc: node.getSuccessors())
                     	{
                             // Small test to check allowed roads...
@@ -80,20 +86,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                             {
                                 continue;
                             }
-                            
-                            if (TabLab.get(arc.getDestination().getId()).getMarque()==false)
+                            if (TabLab.get(arc.getDestination().getId()).getMarque() == false)
                             {
-                            	double oldDist = TabLab.get(arc.getDestination().getId()).getCost();
-                            	double newDist = TabLab.get(node.getId()).getCost() + data.getCost(arc);
-                                if (Double.isInfinite(oldDist) && Double.isFinite(newDist))
+                            	double oldTotalDist = TabLab.get(arc.getDestination().getId()).getTotalCost();
+                            	double oldDist      = TabLab.get(arc.getDestination().getId()).getCost();
+                            	double newTotalDist = TabLab.get(node.getId()).getCost() + data.getCost(arc);
+                                if (Double.isInfinite(oldTotalDist) && Double.isFinite(newTotalDist))
                                 {
                                     notifyNodeReached(arc.getDestination());
                                 }
-                            	if (oldDist > newDist)
+                            	if ((Double.isInfinite(oldDist)) /*premier noeud (oldTotalDist-oldDist) non defini*/
+                            			|| (oldTotalDist > (newTotalDist+(oldTotalDist-oldDist))))                          		
                             	{
-                            		TabLab.get(arc.getDestination().getId()).setCost(newDist); 
+                            		TabLab.get(arc.getDestination().getId()).setCost(newTotalDist); 
                             		predecessorArcs[arc.getDestination().getId()] = arc;
-                        			
+                            		this.perfo.setTailleTas(TabLab.size());
                             		if (TabLab.get(arc.getDestination().getId()).getVisite())
                             		{
                             			tas.remove(TabLab.get(arc.getDestination().getId())); 
@@ -103,6 +110,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                             		{
                             			tas.insert(TabLab.get(arc.getDestination().getId()));
                             			TabLab.get(arc.getDestination().getId()).setVisite(true);
+                            			this.perfo.IncrNbSommetVisites();
                             		}
                             	}
                             }
@@ -111,7 +119,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             		tas.deleteMin();
             	}
         	}
-            
+            this.perfo.endChrono(System.currentTimeMillis());
             // Destination has no predecessor, the solution is infeasible... no path
             if (predecessorArcs[data.getDestination().getId()] == null)
             {
@@ -129,7 +137,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 {
                     arcs.add(arc);
                     arc = predecessorArcs[arc.getOrigin().getId()];
-                    compteurArcSolution ++;
                 }
 
                 // Reverse the path...
@@ -137,10 +144,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
                 // Create the final solution.
                 solution = new ShortestPathSolution(data, Status.FEASIBLE, new Path(graph, arcs));
+                /*this.perfo.setValSolution(solution);*/
             }
-            
-            System.out.println("nb iteration: "+compteurIteration);
-            System.out.println("nb arc solution: "+compteurArcSolution);
+        	/*System.out.println("val_solution    "+this.perfo.getValSolution());*/
+        	System.out.println("temps CPU       "+this.perfo.getCPUTime());
+        	System.out.println("nbSommetVisites "+this.perfo.getNbSommetVisites());
+        	System.out.println("nbSommetMarques "+this.perfo.getNbSommetMarques());
+        	System.out.println("taille maxi tas "+this.perfo.getTailleTasMax());        	
         }
         
         return solution;
