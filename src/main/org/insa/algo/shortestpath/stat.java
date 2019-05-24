@@ -2,36 +2,35 @@ package org.insa.algo.shortestpath;
 
 public class stat {
 	protected String valSolution;
-	protected static long tps_calc;
-	protected static int nbSommetVisites;
-	protected static int nbSommetMarques;
-	protected static int TailleTasMax;
+	protected long tps_calc;
+	protected int nbSommetVisites;
+	protected int nbSommetMarques;
+	protected int TailleTasMax;
 	
 	public stat() {
-        nbSommetVisites = 0;
-        nbSommetMarques = 0;
-        TailleTasMax = 0; 
+		this.nbSommetVisites = 0;
+        this.nbSommetMarques = 0;
+        this.TailleTasMax = 0; 
 	}
 	
 	public void setValSolution(ShortestPathSolution sol) {
 		this.valSolution=sol.toString();
 	}
 	public void startChrono(long tps) {
-		tps_calc = tps;
+		this.tps_calc = tps;
 	}
 	public void endChrono(long tps) {
-		tps_calc = tps-tps_calc;
+		this.tps_calc = tps-tps_calc;
 	}
 	public void IncrNbSommetVisites() {
-		nbSommetVisites ++;
+		this.nbSommetVisites ++;
 	}
 	public void IncrNbSommetMarques() {
-		nbSommetMarques ++;
-		System.out.println(nbSommetMarques);
+		this.nbSommetMarques ++;
 	}
 	public void setTailleTas(int taille) {
-		if (TailleTasMax < taille) 
-			TailleTasMax = taille;
+		if (this.TailleTasMax < taille) 
+			this.TailleTasMax = taille;
 	}
 	
 	/*getter*/
@@ -39,16 +38,17 @@ public class stat {
 		return this.valSolution;
 	}
 	public long getCPUTime() {
-		return tps_calc;
+		return this.tps_calc;
 	}
 	public long getNbSommetVisites() {
-		return tps_calc;
+		return this.nbSommetVisites;
 	}
 	public long getNbSommetMarques() {
-		return tps_calc;
+		return this.nbSommetMarques;
 	}
 	public int getTailleTasMax() {
-		return TailleTasMax;
+		return this.TailleTasMax;
 	}
+	
 
 }
